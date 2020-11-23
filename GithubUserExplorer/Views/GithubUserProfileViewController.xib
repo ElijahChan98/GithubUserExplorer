@@ -14,6 +14,7 @@
                 <outlet property="followersLabel" destination="Kwz-qd-gXF" id="EWu-TY-xli"/>
                 <outlet property="followingLabel" destination="Okp-hw-C3a" id="Ipp-0c-bCV"/>
                 <outlet property="nameLabel" destination="bEs-7D-Nbk" id="0nt-6E-N34"/>
+                <outlet property="noInternetBanner" destination="qOC-Ny-kdv" id="nFc-QC-Zwr"/>
                 <outlet property="notesTextField" destination="CR6-mD-Reb" id="81Z-T8-vmz"/>
                 <outlet property="userProfileImageView" destination="0bC-nt-TZB" id="oum-V7-tFm"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -76,6 +77,14 @@
                         <constraint firstAttribute="height" constant="100" id="u8j-9f-jAo"/>
                     </constraints>
                 </stackView>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" borderStyle="roundedRect" placeholder="Add notes here" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CR6-mD-Reb">
+                    <rect key="frame" x="10" y="434" width="394" height="120"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="120" id="Lah-vx-nNs"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Zj-1B-Vie">
                     <rect key="frame" x="10" y="404" width="45.5" height="25"/>
                     <constraints>
@@ -96,14 +105,18 @@
                         <action selector="onSaveButtonClick:" destination="-1" eventType="touchUpInside" id="YIC-XI-wJf"/>
                     </connections>
                 </button>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" borderStyle="roundedRect" placeholder="Add notes here" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CR6-mD-Reb">
-                    <rect key="frame" x="10" y="434" width="394" height="120"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Internet Connection" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qOC-Ny-kdv">
+                    <rect key="frame" x="118" y="44" width="178.5" height="25"/>
+                    <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="120" id="Lah-vx-nNs"/>
+                        <constraint firstAttribute="height" constant="25" id="3LS-U7-Gfn"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="apx-kd-qnZ"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="25" id="xRA-ax-NjW"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                </textField>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>
@@ -117,11 +130,13 @@
                 <constraint firstItem="Hh5-GD-rH2" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="Gdt-pg-p3s"/>
                 <constraint firstItem="Xz5-Sz-s3B" firstAttribute="top" secondItem="CR6-mD-Reb" secondAttribute="bottom" constant="15" id="HOO-MZ-fHB"/>
                 <constraint firstItem="P2S-er-Vr6" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="PYt-cP-68C"/>
+                <constraint firstItem="qOC-Ny-kdv" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="S6B-Bj-jmh"/>
                 <constraint firstItem="0bC-nt-TZB" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="UIr-7u-I4t"/>
                 <constraint firstItem="7Zj-1B-Vie" firstAttribute="top" secondItem="Hh5-GD-rH2" secondAttribute="bottom" constant="30" id="Uhh-Sj-oQw"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0bC-nt-TZB" secondAttribute="trailing" id="Xeu-QF-oJC"/>
                 <constraint firstItem="CR6-mD-Reb" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="bO0-Ep-UbY"/>
                 <constraint firstItem="Xz5-Sz-s3B" firstAttribute="centerX" secondItem="CR6-mD-Reb" secondAttribute="centerX" id="oMI-d5-dHW"/>
+                <constraint firstItem="qOC-Ny-kdv" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="tWN-vA-kby"/>
                 <constraint firstItem="CR6-mD-Reb" firstAttribute="top" secondItem="7Zj-1B-Vie" secondAttribute="bottom" constant="5" id="zKp-pm-CuA"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

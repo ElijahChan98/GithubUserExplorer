@@ -66,6 +66,23 @@ class GithubUser: Codable {
         }
         return nil
     }
+    
+    func createUserProfileFromPayload(_ payload: [String: Any]) -> GithubUser? {
+        let decoder = JSONDecoder()
+        do{
+            let jsonData = try JSONSerialization.data(withJSONObject: payload, options: .prettyPrinted)
+            do {
+                let user = try decoder.decode(GithubUser.self, from: jsonData)
+                return user
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        catch {
+            print(error.localizedDescription)
+        }
+        return nil
+    }
 }
 
 class ImageDownloader: Operation {

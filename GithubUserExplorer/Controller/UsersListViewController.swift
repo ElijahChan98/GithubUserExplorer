@@ -34,7 +34,6 @@ class UsersListViewController: UIViewController, Storyboarded, UsersListViewMode
         
         self.tableview.delegate = self
         self.tableview.dataSource = self
-        //self.tableview.prefetchDataSource = self
         self.tableview.register(UINib.init(nibName: "NormalUserCell", bundle: nil), forCellReuseIdentifier: "NormalUserCell")
         self.tableview.register(UINib.init(nibName: "NotedUserCell", bundle: nil), forCellReuseIdentifier: "NotedUserCell")
         
@@ -205,9 +204,6 @@ extension UsersListViewController: UITableViewDelegate, UITableViewDataSource {
         guard !isFiltering else {
             return
         }
-//        if Int(indexPath.row + 1) % 30 == 0 {
-//            viewModel.fetchGithubUsers()
-//        }
         if indexPath.row + 1 == viewModel.totalCount {
             viewModel.fetchGithubUsers()
         }

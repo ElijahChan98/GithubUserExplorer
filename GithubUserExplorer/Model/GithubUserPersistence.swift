@@ -102,6 +102,7 @@ class GithubUserPersistence {
                 if object.count == 1
                 {
                     let objectUpdate = object.first as! NSManagedObject
+                    objectUpdate.setValue(user.id, forKey: "id")
                     objectUpdate.setValue(user.userUrl, forKey: "userUrl")
                     objectUpdate.setValue(user.avatarStringUrl, forKey: "avatarStringUrl")
                     objectUpdate.setValue(user.details, forKey: "details")
@@ -116,6 +117,7 @@ class GithubUserPersistence {
                     objectUpdate.setValue(user.blog, forKey: "blog")
                     objectUpdate.setValue(user.followers, forKey: "followers")
                     objectUpdate.setValue(user.following, forKey: "following")
+                    
                     do{
                         try managedContext.save()
                     }
@@ -177,8 +179,9 @@ class GithubUserPersistence {
                 if let stateStringValue = managedUser.value(forKeyPath: "photoRecordState") as? String {
                     user.state = PhotoRecordState(rawValue: stateStringValue)!
                 }
-                
-                users.append(user)
+                if user.id != -1 {
+                    users.append(user)
+                }
             }
             completion(true, users)
         }

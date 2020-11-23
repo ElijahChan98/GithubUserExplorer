@@ -25,24 +25,26 @@ class GithubUserProfileViewModel {
     
     func saveNote(_ note: String) {
         user.note = note
-        GithubUserPersistence.shared.update(user: user)
+        let userToSave = user
+        GithubUserPersistence.shared.update(user: userToSave)
     }
     
     func fetchUserProfile() {
-        DispatchQueue.main.async {
-            RequestManager.shared.fetchGithubUserProfile(username: self.user.username!) { (success, response) in
-                if let payload = response {
-                    if let fetchedUser = GithubUser().createUserFromPayload(payload) {
-                        self.user.followers = fetchedUser.followers
-                        self.user.following = fetchedUser.following
-                        self.user.name = fetchedUser.name
-                        self.user.blog = fetchedUser.blog
-                        self.user.company = fetchedUser.company
-                        self.user.seen = true
-                        GithubUserPersistence.shared.update(user: self.user)
-                        self.delegate?.updateUIElementsWithUser(self.user)
-                    }
+        RequestManager.shared.fetchGithubUserProfile(username: self.user.username!) { (success, response) in
+            if let payload = response {
+                if let fetchedUser = GithubUser().createUserProfileFromPayload(payload) {
+                    self.user.id = fetchedUser.id
+                    self.user.followers = fetchedUser.followers
+                    self.user.following = fetchedUser.following
+                    self.user.name = fetchedUser.name
+                    self.user.blog = fetchedUser.blog
+                    self.user.company = fetchedUser.company
+                    self.user.seen = true
+                    GithubUserPersistence.shared.update(user: fetchedUser)
                 }
+            }
+            DispatchQueue.main.async {
+                self.delegate?.updateUIElementsWithUser(self.user)
             }
         }
     }

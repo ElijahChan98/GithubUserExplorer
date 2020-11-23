@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="GithubUserAvatar" representedClassName="GithubUserAvatar" syncable="YES" codeGenerationType="class">
-        <attribute name="avatarStringUrl" optional="YES" attributeType="String"/>
+        <attribute name="avatarStringUrl" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="blog" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="company" optional="YES" attributeType="String" defaultValueString=""/>
-        <attribute name="details" optional="YES" attributeType="String"/>
+        <attribute name="details" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="followers" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="following" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="-1" usesScalarValueType="YES"/>
         <attribute name="imageData" optional="YES" attributeType="Binary"/>
         <attribute name="name" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="note" optional="YES" attributeType="String"/>
         <attribute name="photoRecordState" optional="YES" attributeType="String"/>
         <attribute name="seen" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="username" optional="YES" attributeType="String"/>
-        <attribute name="userUrl" optional="YES" attributeType="String"/>
+        <attribute name="username" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="userUrl" optional="YES" attributeType="String" defaultValueString=""/>
     </entity>
     <elements>
         <element name="GithubUserAvatar" positionX="-63" positionY="-18" width="128" height="253"/>

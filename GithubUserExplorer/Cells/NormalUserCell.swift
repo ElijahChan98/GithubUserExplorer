@@ -14,12 +14,6 @@ class NormalUserCell: UITableViewCell {
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    public func configureCell(user: String?, detail: String?, image: UIImage?) {
-        self.userLabel.text = user
-        self.detailLabel.text = detail
-        self.imageView?.image = image
-    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

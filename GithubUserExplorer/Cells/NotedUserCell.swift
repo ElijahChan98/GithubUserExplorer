@@ -15,12 +15,6 @@ class NotedUserCell: UITableViewCell {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var noteImageView: UIImageView!
     
-    public func configureCell(user: String?, detail: String?, image: UIImage?) {
-        self.userLabel.text = user
-        self.detailLabel.text = detail
-        self.imageView?.image = image
-    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

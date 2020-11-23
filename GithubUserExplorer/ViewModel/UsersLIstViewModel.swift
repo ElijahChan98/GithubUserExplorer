@@ -53,10 +53,8 @@ class UsersListViewModel {
         
         self.isFetchInProgress = true
         
-        
         RequestManager.shared.fetchGithubUsers(since: since) { (success, response) in
             if success {
-                //self.users = []
                 let sinceCounter = self.since
                 var newUsers: [GithubUser] = []
                 if let payloads = response?["payloads"] as? [[String: Any]] {
@@ -112,7 +110,7 @@ class UsersListViewModel {
         }
         startFiltration(for: user, at: indexPath)
         default:
-        NSLog("do nothing")
+            print("do nothing")
         }
     }
     

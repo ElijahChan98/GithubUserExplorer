@@ -39,6 +39,10 @@ class RequestManager {
     }
     
     private func createGenericRequest(url: String, requestMethod: RequestMethod, completion: @escaping (_ success: Bool, _ response: [String: Any]?) -> ()) {
+        guard Reachability.isConnectedToNetwork() else {
+            completion(false, nil)
+            return
+        }
         
         let session = URLSession.shared
         let urlString = url.urlString()
@@ -49,7 +53,6 @@ class RequestManager {
             DispatchQueue.main.async {
                 if let httpResponse = response as? HTTPURLResponse {
                     if httpResponse.statusCode == 401 {
-                        //completion(false, Messages.AUTHORIZATION_FAILED, nil)
                     }
                     else if httpResponse.statusCode == 500 {
                         //internal server error
