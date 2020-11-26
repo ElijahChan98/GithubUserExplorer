@@ -30,14 +30,23 @@ class UsersListViewModel {
     }
     
     func appendUserToUserItems(user: GithubUser) {
-        let index = self.users.firstIndex(where: { $0 === user })
-        if let note = user.note {
-            let notedItem = NotedUserViewModelItem(note: note, user: user)
-            self.userItems.append(notedItem)
+        guard let index = self.users.firstIndex(where: { $0 === user }) else{
+            //no user found
+            return
         }
-        else if let index = index, (index + 1) % 4 == 0{
+        let hasNote = user.note != nil
+        let isFourth = (index + 1) % 4 == 0
+        if hasNote && isFourth {
+            let notedInverted = NotedInvertedUserViewModelItem(note: user.note!, user: user)
+            self.userItems.append(notedInverted)
+        }
+        else if isFourth{
             let invertedItem = InvertedUserViewModelItem(user: user)
             self.userItems.append(invertedItem)
+        }
+        else if hasNote {
+            let notedItem = NotedUserViewModelItem(note: user.note!, user: user)
+            self.userItems.append(notedItem)
         }
         else {
             let normalItem = NormalUserViewModelItem(user: user)

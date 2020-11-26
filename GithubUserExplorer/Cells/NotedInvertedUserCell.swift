@@ -1,5 +1,5 @@
 //
-//  UserCell.swift
+//  NotedInvertedUserCell.swift
 //  GithubUserExplorer
 //
 //  Created by Elijah Tristan Huey Chan on 11/26/20.
@@ -8,13 +8,30 @@
 
 import UIKit
 
-class UserCell: UITableViewCell {
+class NotedInvertedUserCell: UITableViewCell {
     @IBOutlet weak var avatarImage: UIImageView!
     @IBOutlet weak var userLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var noteImageView: UIImageView!
-
+    var item: UserViewModelItem? {
+        didSet {
+            guard let item = item as? NotedInvertedUserViewModelItem else {
+                return
+            }
+            
+            userLabel.text = item.user.username
+            detailLabel.text = item.user.details
+            avatarImage.image = applyInvertedColorsFilter(item.user.image ?? UIImage())
+            if item.user.seen == true {
+                self.backgroundColor = .lightGray
+            }
+            else {
+                self.backgroundColor = nil
+            }
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -42,4 +59,5 @@ class UserCell: UITableViewCell {
 
         return UIImage(cgImage: outImage)
     }
+    
 }

@@ -12,6 +12,7 @@ enum UserViewModelItemType {
     case Normal
     case Inverted
     case Noted
+    case NotedInverted
 }
 
 protocol UserViewModelItem {
@@ -48,5 +49,17 @@ class NotedUserViewModelItem: UserViewModelItem {
         self.user = user
         self.note = note
         self.type = .Noted
+    }
+}
+
+class NotedInvertedUserViewModelItem: UserViewModelItem {
+    var note: String
+    var user: GithubUser
+    var type: UserViewModelItemType
+    
+    init(note: String, user: GithubUser) {
+        self.user = user
+        self.note = note
+        self.type = .NotedInverted
     }
 }

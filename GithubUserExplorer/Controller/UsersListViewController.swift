@@ -40,6 +40,7 @@ class UsersListViewController: UIViewController, Storyboarded, UsersListViewMode
         self.tableview.register(UINib.init(nibName: "NormalUserCell", bundle: nil), forCellReuseIdentifier: "NormalUserCell")
         self.tableview.register(UINib.init(nibName: "NotedUserCell", bundle: nil), forCellReuseIdentifier: "NotedUserCell")
         self.tableview.register(UINib.init(nibName: "InvertedUserCell", bundle: nil), forCellReuseIdentifier: "InvertedUserCell")
+        self.tableview.register(UINib.init(nibName: "NotedInvertedUserCell", bundle: nil), forCellReuseIdentifier: "NotedInvertedUserCell")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -160,6 +161,19 @@ extension UsersListViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case .Inverted:
             let cell = self.tableview.dequeueReusableCell(withIdentifier: "InvertedUserCell") as! InvertedUserCell
+            cell.item = item
+            switch (item.user.state) {
+            case .failed, .downloaded:
+                cell.activityIndicator.stopAnimating()
+            case .new:
+                cell.activityIndicator.startAnimating()
+                if !tableView.isDragging && !tableView.isDecelerating {
+                    viewModel.startOperations(for: item.user, at: indexPath)
+                }
+            }
+            return cell
+        case .NotedInverted:
+            let cell = self.tableview.dequeueReusableCell(withIdentifier: "NotedInvertedUserCell") as! NotedInvertedUserCell
             cell.item = item
             switch (item.user.state) {
             case .failed, .downloaded:
