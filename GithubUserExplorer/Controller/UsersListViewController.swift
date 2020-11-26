@@ -37,21 +37,22 @@ class UsersListViewController: UIViewController, Storyboarded, UsersListViewMode
         
         self.tableview.delegate = self
         self.tableview.dataSource = self
-        self.tableview.register(UINib.init(nibName: "NormalUserCell", bundle: nil), forCellReuseIdentifier: "NormalUserCell")
-        self.tableview.register(UINib.init(nibName: "NotedUserCell", bundle: nil), forCellReuseIdentifier: "NotedUserCell")
-        self.tableview.register(UINib.init(nibName: "InvertedUserCell", bundle: nil), forCellReuseIdentifier: "InvertedUserCell")
-        self.tableview.register(UINib.init(nibName: "NotedInvertedUserCell", bundle: nil), forCellReuseIdentifier: "NotedInvertedUserCell")
+        self.tableview.register(UINib.init(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCell")
+        viewModel.fetchUsersFromCache()
+        viewModel.fetchGithubUsers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if firstLoad {
-            viewModel.fetchUsersFromCache()
-            viewModel.fetchGithubUsers()
-            firstLoad = false
-        }
-        else {
-            viewModel.fetchUsersFromCache()
-        }
+//        if firstLoad {
+//            viewModel.fetchUsersFromCache()
+//            viewModel.fetchGithubUsers()
+//            firstLoad = false
+//        }
+//        else {
+//            viewModel.fetchUsersFromCache()
+//        }
+//        viewModel.fetchUsersFromCache()
+//        viewModel.fetchGithubUsers()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -125,67 +126,25 @@ extension UsersListViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var item: UserViewModelItem
+        var item: GenericUserItem
         if !isFiltering {
             item = viewModel.userItems[indexPath.row]
         }
         else {
             item = viewModel.filteredUserItems[indexPath.row]
         }
-        switch item.type {
-        case .Normal:
-            let cell = self.tableview.dequeueReusableCell(withIdentifier: "NormalUserCell") as! NormalUserCell
-            cell.item = item
-            switch (item.user.state) {
-            case .failed, .downloaded:
-                cell.activityIndicator.stopAnimating()
-            case .new:
-                cell.activityIndicator.startAnimating()
-                if !tableView.isDragging && !tableView.isDecelerating {
-                    viewModel.startOperations(for: item.user, at: indexPath)
-                }
+        let cell = self.tableview.dequeueReusableCell(withIdentifier: "UserCell") as! UserCell
+        cell.item = item
+        switch (item.user.state) {
+        case .failed, .downloaded:
+            cell.activityIndicator.stopAnimating()
+        case .new:
+            cell.activityIndicator.startAnimating()
+            if !tableView.isDragging && !tableView.isDecelerating {
+                viewModel.startOperations(for: item.user, at: indexPath)
             }
-            return cell
-        case .Noted:
-            let cell = self.tableview.dequeueReusableCell(withIdentifier: "NotedUserCell") as! NotedUserCell
-            cell.item = item
-            switch (item.user.state) {
-            case .failed, .downloaded:
-                cell.activityIndicator.stopAnimating()
-            case .new:
-                cell.activityIndicator.startAnimating()
-                if !tableView.isDragging && !tableView.isDecelerating {
-                    viewModel.startOperations(for: item.user, at: indexPath)
-                }
-            }
-            return cell
-        case .Inverted:
-            let cell = self.tableview.dequeueReusableCell(withIdentifier: "InvertedUserCell") as! InvertedUserCell
-            cell.item = item
-            switch (item.user.state) {
-            case .failed, .downloaded:
-                cell.activityIndicator.stopAnimating()
-            case .new:
-                cell.activityIndicator.startAnimating()
-                if !tableView.isDragging && !tableView.isDecelerating {
-                    viewModel.startOperations(for: item.user, at: indexPath)
-                }
-            }
-            return cell
-        case .NotedInverted:
-            let cell = self.tableview.dequeueReusableCell(withIdentifier: "NotedInvertedUserCell") as! NotedInvertedUserCell
-            cell.item = item
-            switch (item.user.state) {
-            case .failed, .downloaded:
-                cell.activityIndicator.stopAnimating()
-            case .new:
-                cell.activityIndicator.startAnimating()
-                if !tableView.isDragging && !tableView.isDecelerating {
-                    viewModel.startOperations(for: item.user, at: indexPath)
-                }
-            }
-            return cell
         }
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

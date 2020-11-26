@@ -1,5 +1,5 @@
 //
-//  NotedInvertedUserCell.swift
+//  UserCell.swift
 //  GithubUserExplorer
 //
 //  Created by Elijah Tristan Huey Chan on 11/26/20.
@@ -8,21 +8,35 @@
 
 import UIKit
 
-class NotedInvertedUserCell: UITableViewCell {
+class UserCell: UITableViewCell {
     @IBOutlet weak var avatarImage: UIImageView!
     @IBOutlet weak var userLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var noteImageView: UIImageView!
-    var item: UserViewModelItem? {
+    var item: GenericUserItem? {
         didSet {
-            guard let item = item as? NotedInvertedUserViewModelItem else {
+            guard let item = item as? NormalUserItem else {
                 return
             }
             
             userLabel.text = item.user.username
             detailLabel.text = item.user.details
-            avatarImage.image = applyInvertedColorsFilter(item.user.image ?? UIImage())
+            
+            if item.showNote {
+                noteImageView.isHidden = false
+            }
+            else {
+                noteImageView.isHidden = true
+            }
+            
+            if item.invertImage {
+                avatarImage.image = applyInvertedColorsFilter(item.user.image ?? UIImage())
+            }
+            else{
+                avatarImage.image = item.user.image
+            }
+            
             if item.user.seen == true {
                 self.backgroundColor = .lightGray
             }
@@ -31,7 +45,6 @@ class NotedInvertedUserCell: UITableViewCell {
             }
         }
     }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -42,7 +55,6 @@ class NotedInvertedUserCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
     func applyInvertedColorsFilter(_ image: UIImage) -> UIImage? {
         guard let data = image.pngData() else { return nil }
         let inputImage = CIImage(data: data)
@@ -59,5 +71,4 @@ class NotedInvertedUserCell: UITableViewCell {
 
         return UIImage(cgImage: outImage)
     }
-    
 }

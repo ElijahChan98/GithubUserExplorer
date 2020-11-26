@@ -7,11 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5D1919C7256F6FFB00A86B6A /* InvertedUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1919C5256F6FFB00A86B6A /* InvertedUserCell.swift */; };
-		5D1919C8256F6FFB00A86B6A /* InvertedUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1919C6256F6FFB00A86B6A /* InvertedUserCell.xib */; };
 		5D1919CA256F7A8800A86B6A /* CellItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1919C9256F7A8800A86B6A /* CellItems.swift */; };
-		5D1919D1256F917500A86B6A /* NotedInvertedUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1919CF256F917500A86B6A /* NotedInvertedUserCell.swift */; };
-		5D1919D2256F917500A86B6A /* NotedInvertedUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1919D0256F917500A86B6A /* NotedInvertedUserCell.xib */; };
+		5D1919D5256F97A600A86B6A /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1919D3256F97A600A86B6A /* UserCell.swift */; };
+		5D1919D6256F97A600A86B6A /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1919D4256F97A600A86B6A /* UserCell.xib */; };
 		5D7AB821256919F900BBE08A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7AB820256919F900BBE08A /* AppDelegate.swift */; };
 		5D7AB823256919F900BBE08A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7AB822256919F900BBE08A /* SceneDelegate.swift */; };
 		5D7AB825256919F900BBE08A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7AB824256919F900BBE08A /* ViewController.swift */; };
@@ -28,10 +26,6 @@
 		5D7AB85725692C3500BBE08A /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7AB85625692C3500BBE08A /* RequestManager.swift */; };
 		5D7AB85A25692C9C00BBE08A /* OperationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7AB85925692C9C00BBE08A /* OperationsManager.swift */; };
 		5D7AB85C25692CD300BBE08A /* Reachability+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7AB85B25692CD300BBE08A /* Reachability+Extension.swift */; };
-		5D7AB86025692D4400BBE08A /* NormalUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7AB85E25692D4400BBE08A /* NormalUserCell.swift */; };
-		5D7AB86125692D4400BBE08A /* NormalUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D7AB85F25692D4400BBE08A /* NormalUserCell.xib */; };
-		5D7AB86825692D6600BBE08A /* NotedUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7AB86625692D6600BBE08A /* NotedUserCell.swift */; };
-		5D7AB86925692D6600BBE08A /* NotedUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D7AB86725692D6600BBE08A /* NotedUserCell.xib */; };
 		5D7AB86B256A24A300BBE08A /* Storyboarded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7AB86A256A24A300BBE08A /* Storyboarded.swift */; };
 		5D7AB86D256A3FFA00BBE08A /* GithubUserPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7AB86C256A3FFA00BBE08A /* GithubUserPersistence.swift */; };
 		5D7AB872256A461500BBE08A /* GithubUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7AB870256A461500BBE08A /* GithubUserProfileViewController.swift */; };
@@ -59,11 +53,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5D1919C5256F6FFB00A86B6A /* InvertedUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvertedUserCell.swift; sourceTree = "<group>"; };
-		5D1919C6256F6FFB00A86B6A /* InvertedUserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvertedUserCell.xib; sourceTree = "<group>"; };
 		5D1919C9256F7A8800A86B6A /* CellItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellItems.swift; sourceTree = "<group>"; };
-		5D1919CF256F917500A86B6A /* NotedInvertedUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotedInvertedUserCell.swift; sourceTree = "<group>"; };
-		5D1919D0256F917500A86B6A /* NotedInvertedUserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotedInvertedUserCell.xib; sourceTree = "<group>"; };
+		5D1919D3256F97A600A86B6A /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		5D1919D4256F97A600A86B6A /* UserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
 		5D7AB81D256919F900BBE08A /* GithubUserExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GithubUserExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D7AB820256919F900BBE08A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D7AB822256919F900BBE08A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -84,10 +76,6 @@
 		5D7AB85625692C3500BBE08A /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
 		5D7AB85925692C9C00BBE08A /* OperationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationsManager.swift; sourceTree = "<group>"; };
 		5D7AB85B25692CD300BBE08A /* Reachability+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reachability+Extension.swift"; sourceTree = "<group>"; };
-		5D7AB85E25692D4400BBE08A /* NormalUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalUserCell.swift; sourceTree = "<group>"; };
-		5D7AB85F25692D4400BBE08A /* NormalUserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NormalUserCell.xib; sourceTree = "<group>"; };
-		5D7AB86625692D6600BBE08A /* NotedUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotedUserCell.swift; sourceTree = "<group>"; };
-		5D7AB86725692D6600BBE08A /* NotedUserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotedUserCell.xib; sourceTree = "<group>"; };
 		5D7AB86A256A24A300BBE08A /* Storyboarded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storyboarded.swift; sourceTree = "<group>"; };
 		5D7AB86C256A3FFA00BBE08A /* GithubUserPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubUserPersistence.swift; sourceTree = "<group>"; };
 		5D7AB870256A461500BBE08A /* GithubUserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubUserProfileViewController.swift; sourceTree = "<group>"; };
@@ -233,10 +221,7 @@
 		5D7AB85D25692CFF00BBE08A /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				5D7AB85E25692D4400BBE08A /* NormalUserCell.swift */,
-				5D7AB86625692D6600BBE08A /* NotedUserCell.swift */,
-				5D1919C5256F6FFB00A86B6A /* InvertedUserCell.swift */,
-				5D1919CF256F917500A86B6A /* NotedInvertedUserCell.swift */,
+				5D1919D3256F97A600A86B6A /* UserCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -244,11 +229,8 @@
 		5D7AB874256A4A6000BBE08A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				5D1919C6256F6FFB00A86B6A /* InvertedUserCell.xib */,
-				5D7AB85F25692D4400BBE08A /* NormalUserCell.xib */,
-				5D7AB86725692D6600BBE08A /* NotedUserCell.xib */,
 				5D7AB871256A461500BBE08A /* GithubUserProfileViewController.xib */,
-				5D1919D0256F917500A86B6A /* NotedInvertedUserCell.xib */,
+				5D1919D4256F97A600A86B6A /* UserCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -334,14 +316,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5D7AB86925692D6600BBE08A /* NotedUserCell.xib in Resources */,
 				5D7AB873256A461500BBE08A /* GithubUserProfileViewController.xib in Resources */,
 				5D7AB830256919FB00BBE08A /* LaunchScreen.storyboard in Resources */,
 				5D7AB82D256919FB00BBE08A /* Assets.xcassets in Resources */,
-				5D1919D2256F917500A86B6A /* NotedInvertedUserCell.xib in Resources */,
+				5D1919D6256F97A600A86B6A /* UserCell.xib in Resources */,
 				5D7AB828256919F900BBE08A /* Main.storyboard in Resources */,
-				5D1919C8256F6FFB00A86B6A /* InvertedUserCell.xib in Resources */,
-				5D7AB86125692D4400BBE08A /* NormalUserCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,15 +340,13 @@
 			files = (
 				5D7AB825256919F900BBE08A /* ViewController.swift in Sources */,
 				5D7AB821256919F900BBE08A /* AppDelegate.swift in Sources */,
-				5D7AB86825692D6600BBE08A /* NotedUserCell.swift in Sources */,
 				5D7AB84E25692A1800BBE08A /* Coordinator.swift in Sources */,
-				5D7AB86025692D4400BBE08A /* NormalUserCell.swift in Sources */,
 				5D1919CA256F7A8800A86B6A /* CellItems.swift in Sources */,
-				5D1919C7256F6FFB00A86B6A /* InvertedUserCell.swift in Sources */,
 				5D7AB85125692AD000BBE08A /* UsersListViewController.swift in Sources */,
 				5D7AB85C25692CD300BBE08A /* Reachability+Extension.swift in Sources */,
 				5D7AB878256A51B800BBE08A /* GithubUserProfileViewModel.swift in Sources */,
 				5D7AB87A256A9B4300BBE08A /* ViewController+Extension.swift in Sources */,
+				5D1919D5256F97A600A86B6A /* UserCell.swift in Sources */,
 				5D7AB85525692B9100BBE08A /* GithubUser.swift in Sources */,
 				5D7AB85725692C3500BBE08A /* RequestManager.swift in Sources */,
 				5D7AB86D256A3FFA00BBE08A /* GithubUserPersistence.swift in Sources */,
@@ -379,7 +356,6 @@
 				5D7AB872256A461500BBE08A /* GithubUserProfileViewController.swift in Sources */,
 				5D7AB84C256929F200BBE08A /* MainCoordinator.swift in Sources */,
 				5D7AB823256919F900BBE08A /* SceneDelegate.swift in Sources */,
-				5D1919D1256F917500A86B6A /* NotedInvertedUserCell.swift in Sources */,
 				5D7AB86B256A24A300BBE08A /* Storyboarded.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

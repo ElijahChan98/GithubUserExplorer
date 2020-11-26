@@ -8,58 +8,22 @@
 
 import UIKit
 
-enum UserViewModelItemType {
-    case Normal
-    case Inverted
-    case Noted
-    case NotedInverted
-}
-
-protocol UserViewModelItem {
-    var type: UserViewModelItemType { get set }
+protocol GenericUserItem {
     var user: GithubUser { get set }
+    
+    var showNote: Bool { get }
+    var invertImage: Bool { get set }
 }
 
-class NormalUserViewModelItem: UserViewModelItem {
-    var user: GithubUser
-    var type: UserViewModelItemType
-    
-    init(user: GithubUser) {
-        self.user = user
-        self.type = .Normal
+class NormalUserItem: GenericUserItem {
+    var showNote: Bool {
+        return user.note != nil
     }
-}
-
-class InvertedUserViewModelItem: UserViewModelItem {
+    var invertImage: Bool
     var user: GithubUser
-    var type: UserViewModelItemType
     
-    init(user: GithubUser) {
+    init(user: GithubUser, invertImage: Bool) {
         self.user = user
-        self.type = .Inverted
-    }
-}
-
-class NotedUserViewModelItem: UserViewModelItem {
-    var note: String
-    var user: GithubUser
-    var type: UserViewModelItemType
-    
-    init(note: String, user: GithubUser) {
-        self.user = user
-        self.note = note
-        self.type = .Noted
-    }
-}
-
-class NotedInvertedUserViewModelItem: UserViewModelItem {
-    var note: String
-    var user: GithubUser
-    var type: UserViewModelItemType
-    
-    init(note: String, user: GithubUser) {
-        self.user = user
-        self.note = note
-        self.type = .NotedInverted
+        self.invertImage = invertImage
     }
 }

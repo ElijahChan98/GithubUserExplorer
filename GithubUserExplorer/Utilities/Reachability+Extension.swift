@@ -47,7 +47,6 @@ public class Reachability {
         let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
         let ret = (isReachable && !needsConnection)
 
-        //NotificationCenter.default.post(name: .NetworkConnectivityDidChange, object: nil, userInfo: ["isConnected": ret])
         return ret
 
     }

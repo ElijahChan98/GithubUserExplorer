@@ -10,8 +10,8 @@ import UIKit
 import CoreData
 
 class UsersListViewModel {
-    var userItems: [UserViewModelItem] = []
-    var filteredUserItems: [UserViewModelItem] = []
+    var userItems: [GenericUserItem] = []
+    var filteredUserItems: [GenericUserItem] = []
     
     var users: [GithubUser] = []
     private let pendingOperations = PendingOperations()
@@ -34,24 +34,10 @@ class UsersListViewModel {
             //no user found
             return
         }
-        let hasNote = user.note != nil
         let isFourth = (index + 1) % 4 == 0
-        if hasNote && isFourth {
-            let notedInverted = NotedInvertedUserViewModelItem(note: user.note!, user: user)
-            self.userItems.append(notedInverted)
-        }
-        else if isFourth{
-            let invertedItem = InvertedUserViewModelItem(user: user)
-            self.userItems.append(invertedItem)
-        }
-        else if hasNote {
-            let notedItem = NotedUserViewModelItem(note: user.note!, user: user)
-            self.userItems.append(notedItem)
-        }
-        else {
-            let normalItem = NormalUserViewModelItem(user: user)
-            self.userItems.append(normalItem)
-        }
+        
+        let item = NormalUserItem(user: user, invertImage: isFourth)
+        self.userItems.append(item)
     }
     
     func fetchUsersFromCache() {
