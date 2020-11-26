@@ -28,8 +28,6 @@ class UsersListViewController: UIViewController, Storyboarded, UsersListViewMode
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(showNoInternetBanner), name: .NetworkConnectivityDidChange, object: nil)
-        ConnectionMonitor.shared.monitorNetworkChanges()
         setupSearchController()
         
         viewModel = UsersListViewModel()
@@ -38,21 +36,16 @@ class UsersListViewController: UIViewController, Storyboarded, UsersListViewMode
         self.tableview.delegate = self
         self.tableview.dataSource = self
         self.tableview.register(UINib.init(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCell")
-        viewModel.fetchUsersFromCache()
-        viewModel.fetchGithubUsers()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(showNoInternetBanner), name: .NetworkConnectivityDidChange, object: nil)
+        ConnectionMonitor.shared.monitorNetworkChanges()
+        
+        reloadViewModel()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-//        if firstLoad {
-//            viewModel.fetchUsersFromCache()
-//            viewModel.fetchGithubUsers()
-//            firstLoad = false
-//        }
-//        else {
-//            viewModel.fetchUsersFromCache()
-//        }
-//        viewModel.fetchUsersFromCache()
-//        viewModel.fetchGithubUsers()
+    func reloadViewModel() {
+        viewModel.fetchUsersFromCache()
+        viewModel.fetchGithubUsers()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -77,6 +70,7 @@ class UsersListViewController: UIViewController, Storyboarded, UsersListViewMode
     
     @objc func showNoInternetBanner(_ notification: NSNotification) {
         guard let isConnected = notification.userInfo?["isConnected"] as? (Bool), isConnected == false else {
+            viewModel.fetchGithubUsers()
             hideNoInternetBanner()
             return
         }
@@ -136,8 +130,10 @@ extension UsersListViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = self.tableview.dequeueReusableCell(withIdentifier: "UserCell") as! UserCell
         cell.item = item
         switch (item.user.state) {
-        case .failed, .downloaded:
+        case .downloaded:
             cell.activityIndicator.stopAnimating()
+        case .failed:
+            viewModel.startOperations(for: item.user, at: indexPath)
         case .new:
             cell.activityIndicator.startAnimating()
             if !tableView.isDragging && !tableView.isDecelerating {

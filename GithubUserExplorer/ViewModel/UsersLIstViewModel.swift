@@ -120,7 +120,7 @@ class UsersListViewModel {
     
     func startOperations(for user: GithubUser, at indexPath: IndexPath) {
         switch (user.state) {
-        case .new:
+        case .new, .failed:
             startDownload(for: user, at: indexPath)
         default:
             print("do nothing")
@@ -128,9 +128,9 @@ class UsersListViewModel {
     }
     
     func startDownload(for user: GithubUser, at indexPath: IndexPath) {
-//        guard Reachability.isConnectedToNetwork() else {
-//            return
-//        }
+        guard Reachability.isConnectedToNetwork() else {
+            return
+        }
         
         guard pendingOperations.downloadsInProgress[indexPath] == nil else {
             return
