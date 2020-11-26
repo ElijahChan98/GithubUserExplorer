@@ -8,6 +8,23 @@
 
 import UIKit
 import SystemConfiguration
+import Network
+
+class ConnectionMonitor {
+    public static let shared = ConnectionMonitor()
+    let monitor = NWPathMonitor()
+    func monitorNetworkChanges() {
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                NotificationCenter.default.post(name: .NetworkConnectivityDidChange, object: nil, userInfo: ["isConnected": true])
+            } else {
+                NotificationCenter.default.post(name: .NetworkConnectivityDidChange, object: nil, userInfo: ["isConnected": false])
+            }
+        }
+        let queue = DispatchQueue(label: "Monitor")
+        monitor.start(queue: queue)
+    }
+}
 
 public class Reachability {
     class func isConnectedToNetwork() -> Bool {
@@ -30,7 +47,7 @@ public class Reachability {
         let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
         let ret = (isReachable && !needsConnection)
 
-        NotificationCenter.default.post(name: .NetworkConnectivityDidChange, object: nil, userInfo: ["isConnected": ret])
+        //NotificationCenter.default.post(name: .NetworkConnectivityDidChange, object: nil, userInfo: ["isConnected": ret])
         return ret
 
     }

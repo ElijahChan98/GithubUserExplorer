@@ -16,12 +16,4 @@ class PendingOperations {
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
-  
-    lazy var filtrationsInProgress: [IndexPath: Operation] = [:]
-    lazy var filtrationQueue: OperationQueue = {
-        var queue = OperationQueue()
-        queue.name = "Image Filtration queue"
-        queue.maxConcurrentOperationCount = 1
-        return queue
-    }()
 }

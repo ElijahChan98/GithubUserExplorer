@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D1919C7256F6FFB00A86B6A /* InvertedUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1919C5256F6FFB00A86B6A /* InvertedUserCell.swift */; };
+		5D1919C8256F6FFB00A86B6A /* InvertedUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1919C6256F6FFB00A86B6A /* InvertedUserCell.xib */; };
+		5D1919CA256F7A8800A86B6A /* CellItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1919C9256F7A8800A86B6A /* CellItems.swift */; };
+		5D1919CD256F8E8A00A86B6A /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1919CB256F8E8A00A86B6A /* UserCell.swift */; };
+		5D1919CE256F8E8A00A86B6A /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1919CC256F8E8A00A86B6A /* UserCell.xib */; };
 		5D7AB821256919F900BBE08A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7AB820256919F900BBE08A /* AppDelegate.swift */; };
 		5D7AB823256919F900BBE08A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7AB822256919F900BBE08A /* SceneDelegate.swift */; };
 		5D7AB825256919F900BBE08A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7AB824256919F900BBE08A /* ViewController.swift */; };
@@ -54,6 +59,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5D1919C5256F6FFB00A86B6A /* InvertedUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvertedUserCell.swift; sourceTree = "<group>"; };
+		5D1919C6256F6FFB00A86B6A /* InvertedUserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvertedUserCell.xib; sourceTree = "<group>"; };
+		5D1919C9256F7A8800A86B6A /* CellItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellItems.swift; sourceTree = "<group>"; };
+		5D1919CB256F8E8A00A86B6A /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		5D1919CC256F8E8A00A86B6A /* UserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
 		5D7AB81D256919F900BBE08A /* GithubUserExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GithubUserExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D7AB820256919F900BBE08A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D7AB822256919F900BBE08A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -177,6 +187,7 @@
 			children = (
 				5D7AB85425692B9100BBE08A /* GithubUser.swift */,
 				5D7AB86C256A3FFA00BBE08A /* GithubUserPersistence.swift */,
+				5D1919C9256F7A8800A86B6A /* CellItems.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -224,6 +235,8 @@
 			children = (
 				5D7AB85E25692D4400BBE08A /* NormalUserCell.swift */,
 				5D7AB86625692D6600BBE08A /* NotedUserCell.swift */,
+				5D1919C5256F6FFB00A86B6A /* InvertedUserCell.swift */,
+				5D1919CB256F8E8A00A86B6A /* UserCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -231,9 +244,11 @@
 		5D7AB874256A4A6000BBE08A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5D1919C6256F6FFB00A86B6A /* InvertedUserCell.xib */,
 				5D7AB85F25692D4400BBE08A /* NormalUserCell.xib */,
 				5D7AB86725692D6600BBE08A /* NotedUserCell.xib */,
 				5D7AB871256A461500BBE08A /* GithubUserProfileViewController.xib */,
+				5D1919CC256F8E8A00A86B6A /* UserCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -323,7 +338,9 @@
 				5D7AB873256A461500BBE08A /* GithubUserProfileViewController.xib in Resources */,
 				5D7AB830256919FB00BBE08A /* LaunchScreen.storyboard in Resources */,
 				5D7AB82D256919FB00BBE08A /* Assets.xcassets in Resources */,
+				5D1919CE256F8E8A00A86B6A /* UserCell.xib in Resources */,
 				5D7AB828256919F900BBE08A /* Main.storyboard in Resources */,
+				5D1919C8256F6FFB00A86B6A /* InvertedUserCell.xib in Resources */,
 				5D7AB86125692D4400BBE08A /* NormalUserCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -347,6 +364,8 @@
 				5D7AB86825692D6600BBE08A /* NotedUserCell.swift in Sources */,
 				5D7AB84E25692A1800BBE08A /* Coordinator.swift in Sources */,
 				5D7AB86025692D4400BBE08A /* NormalUserCell.swift in Sources */,
+				5D1919CA256F7A8800A86B6A /* CellItems.swift in Sources */,
+				5D1919C7256F6FFB00A86B6A /* InvertedUserCell.swift in Sources */,
 				5D7AB85125692AD000BBE08A /* UsersListViewController.swift in Sources */,
 				5D7AB85C25692CD300BBE08A /* Reachability+Extension.swift in Sources */,
 				5D7AB878256A51B800BBE08A /* GithubUserProfileViewModel.swift in Sources */,
@@ -360,6 +379,7 @@
 				5D7AB872256A461500BBE08A /* GithubUserProfileViewController.swift in Sources */,
 				5D7AB84C256929F200BBE08A /* MainCoordinator.swift in Sources */,
 				5D7AB823256919F900BBE08A /* SceneDelegate.swift in Sources */,
+				5D1919CD256F8E8A00A86B6A /* UserCell.swift in Sources */,
 				5D7AB86B256A24A300BBE08A /* Storyboarded.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

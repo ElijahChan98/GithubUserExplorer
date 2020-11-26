@@ -10,8 +10,10 @@ import UIKit
 import CoreData
 
 class UsersListViewModel {
+    var userItems: [UserViewModelItem] = []
+    var filteredUserItems: [UserViewModelItem] = []
+    
     var users: [GithubUser] = []
-    var filteredUsers: [GithubUser] = []
     private let pendingOperations = PendingOperations()
     var delegate: UsersListViewModelDelegate?
     
@@ -20,21 +22,41 @@ class UsersListViewModel {
     private var isFetchInProgress = false
     
     var currentCount: Int {
-        return users.count
+        return userItems.count
     }
     
     var totalCount: Int {
         return total
     }
     
+    func appendUserToUserItems(user: GithubUser) {
+        let index = self.users.firstIndex(where: { $0 === user })
+        if let note = user.note {
+            let notedItem = NotedUserViewModelItem(note: note, user: user)
+            self.userItems.append(notedItem)
+        }
+        else if let index = index, (index + 1) % 4 == 0{
+            let invertedItem = InvertedUserViewModelItem(user: user)
+            self.userItems.append(invertedItem)
+        }
+        else {
+            let normalItem = NormalUserViewModelItem(user: user)
+            self.userItems.append(normalItem)
+        }
+    }
+    
     func fetchUsersFromCache() {
         self.users = []
+        self.userItems = []
         GithubUserPersistence.shared.retrieveUsersFromCache { (success, users) in
             if success {
                 DispatchQueue.main.async {
                     self.users = users
-                    self.total = users.count
                     self.since = users.last?.id ?? 0
+                    for user in users {
+                        self.appendUserToUserItems(user: user)
+                    }
+                    self.total = self.userItems.count
                     self.delegate?.onFetchUsersSuccess(with: .none)
                 }
             }
@@ -67,6 +89,7 @@ class UsersListViewModel {
                                 self.users.append(user)
                                 newUsers.append(user)
                                 self.since = user.id!
+                                self.appendUserToUserItems(user: user)
                             }
                         }
                     }
@@ -104,76 +127,47 @@ class UsersListViewModel {
         switch (user.state) {
         case .new:
             startDownload(for: user, at: indexPath)
-        case .downloaded:
-            guard ((indexPath.row + 1) % 4 == 0) else {
-            return
-        }
-        startFiltration(for: user, at: indexPath)
         default:
             print("do nothing")
         }
     }
     
     func startDownload(for user: GithubUser, at indexPath: IndexPath) {
-        guard Reachability.isConnectedToNetwork() else {
-            return
-        }
+//        guard Reachability.isConnectedToNetwork() else {
+//            return
+//        }
         
         guard pendingOperations.downloadsInProgress[indexPath] == nil else {
             return
         }
         let downloader = ImageDownloader(user)
       
-        downloader.completionBlock = {
+        downloader.completion = {
             if downloader.isCancelled {
                 return
             }
             DispatchQueue.main.async {
                 self.pendingOperations.downloadsInProgress.removeValue(forKey: indexPath)
-                self.delegate?.reloadTableviewRowsAt(at: [indexPath], with: .fade)
+                self.delegate?.reloadTableviewRowsAt(at: [indexPath], with: .automatic)
             }
         }
       
         pendingOperations.downloadsInProgress[indexPath] = downloader
         pendingOperations.downloadQueue.addOperation(downloader)
     }
-        
-    func startFiltration(for user: GithubUser, at indexPath: IndexPath) {
-        guard pendingOperations.filtrationsInProgress[indexPath] == nil else {
-            return
-        }
-
-        let filterer = ImageFiltration(user)
-        filterer.completionBlock = {
-            if filterer.isCancelled {
-                return
-            }
-
-            DispatchQueue.main.async {
-                self.pendingOperations.filtrationsInProgress.removeValue(forKey: indexPath)
-                self.delegate?.reloadTableviewRowsAt(at: [indexPath], with: .fade)
-            }
-        }
-
-        pendingOperations.filtrationsInProgress[indexPath] = filterer
-        pendingOperations.filtrationQueue.addOperation(filterer)
-    }
     
 
     func suspendAllOperations() {
         pendingOperations.downloadQueue.isSuspended = true
-        pendingOperations.filtrationQueue.isSuspended = true
     }
 
     func resumeAllOperations() {
         pendingOperations.downloadQueue.isSuspended = false
-        pendingOperations.filtrationQueue.isSuspended = false
     }
 
     func loadImagesForOnscreenCells() {
         if let pathsArray = self.delegate?.getIndexPathForVisibleRows?() {
-        var allPendingOperations = Set(pendingOperations.downloadsInProgress.keys)
-        allPendingOperations.formUnion(pendingOperations.filtrationsInProgress.keys)
+        let allPendingOperations = Set(pendingOperations.downloadsInProgress.keys)
 
         var toBeCancelled = allPendingOperations
         let visiblePaths = Set(pathsArray)
@@ -187,10 +181,6 @@ class UsersListViewModel {
                 pendingDownload.cancel()
             }
             pendingOperations.downloadsInProgress.removeValue(forKey: indexPath)
-            if let pendingFiltration = pendingOperations.filtrationsInProgress[indexPath] {
-                pendingFiltration.cancel()
-            }
-            pendingOperations.filtrationsInProgress.removeValue(forKey: indexPath)
         }
             
         for indexPath in toBeStarted {
@@ -203,7 +193,8 @@ class UsersListViewModel {
 
 extension UsersListViewModel {
     func filterContentForSearchText(_ searchText: String) {
-        filteredUsers = users.filter({ (user) -> Bool in
+        filteredUserItems = userItems.filter({ (userItem) -> Bool in
+            let user = userItem.user
             let usernameSearch = (user.username?.lowercased().contains(searchText.lowercased()) ?? false)
             let noteSearch = (user.note?.lowercased().contains(searchText.lowercased()) ?? false)
             return usernameSearch || noteSearch

@@ -8,7 +8,6 @@
         <attribute name="followers" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="following" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="-1" usesScalarValueType="YES"/>
-        <attribute name="imageData" optional="YES" attributeType="Binary"/>
         <attribute name="name" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="note" optional="YES" attributeType="String"/>
         <attribute name="photoRecordState" optional="YES" attributeType="String"/>
@@ -17,6 +16,6 @@
         <attribute name="userUrl" optional="YES" attributeType="String" defaultValueString=""/>
     </entity>
     <elements>
-        <element name="GithubUserAvatar" positionX="-63" positionY="-18" width="128" height="253"/>
+        <element name="GithubUserAvatar" positionX="-63" positionY="-18" width="128" height="238"/>
     </elements>
 </model>

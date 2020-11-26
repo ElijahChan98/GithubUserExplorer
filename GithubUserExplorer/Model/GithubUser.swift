@@ -12,7 +12,6 @@ import UIKit
 enum PhotoRecordState: String {
     case new = "new"
     case downloaded = "downloaded"
-    case filtered = "filtered"
     case failed = "failed"
 }
 
@@ -46,7 +45,7 @@ class GithubUser: Codable {
     var seen: Bool?
     
     var state = PhotoRecordState.new
-    var image = UIImage(named: "Placeholder")
+    var image = UIImage(named: "none")
     
     func createUserFromPayload(_ payload: [String: Any]) -> GithubUser? {
         let decoder = JSONDecoder()
@@ -87,82 +86,49 @@ class GithubUser: Codable {
 
 class ImageDownloader: Operation {
     let user: GithubUser
+    var completion: (()->Void)
   
     init(_ user: GithubUser) {
         self.user = user
+        self.completion = {}
     }
   
     override func main() {
         if isCancelled {
+            self.completion()
             return
         }
 
-        guard let stringUrl = user.avatarStringUrl, let avatarUrl = URL(string: stringUrl), let imageData = try? Data(contentsOf: avatarUrl) else {
+        guard let stringUrl = user.avatarStringUrl, let avatarUrl = URL(string: stringUrl), let id = user.id else {
             return
         }
-    
+        
         if isCancelled {
+            self.completion()
             return
         }
-    
-        if !imageData.isEmpty {
-            user.image = UIImage(data:imageData)
-            user.state = .downloaded
-            GithubUserPersistence.shared.update(user: user, imageData: imageData)
-        } else {
-            user.state = .failed
-            user.image = UIImage(named: "Failed")
+        
+        if let cachedImage = GithubUserPersistence.shared.loadImageFromCache(key: "\(id)") {
+            self.user.image = cachedImage
+            self.user.state = .downloaded
+            self.completion()
         }
-    }
-}
-
-class ImageFiltration: Operation {
-    let user: GithubUser
-
-    init(_ user: GithubUser) {
-        self.user = user
-    }
-
-    override func main () {
-        if isCancelled {
-            return
+        else {
+            let task = URLSession.shared.dataTask(with: avatarUrl) { data, response, error in
+                if let data = data, let image = UIImage(data: data) {
+                    self.user.image = image
+                    self.user.state = .downloaded
+                    GithubUserPersistence.shared.saveImageToCache(key: "\(id)", image: image)
+                    self.completion()
+                }
+                else {
+                    self.user.state = .failed
+                    self.user.image = UIImage(named: "placeholder")
+                    self.completion()
+                }
+            }
+            task.resume()
         }
-
-        guard self.user.state == .downloaded else {
-            return
-        }
-
-        if let image = user.image,
-            let filteredImage = applyInvertedColorsFilter(image) {
-            user.image = filteredImage
-            user.state = .filtered
-        }
-    }
-
-    func applyInvertedColorsFilter(_ image: UIImage) -> UIImage? {
-        guard let data = image.pngData() else { return nil }
-        let inputImage = CIImage(data: data)
-
-        if isCancelled {
-            return nil
-        }
-
-        let context = CIContext(options: nil)
-
-        guard let filter = CIFilter(name: "CIColorInvert") else { return nil }
-        filter.setValue(inputImage, forKey: kCIInputImageKey)
-
-        if isCancelled {
-            return nil
-        }
-
-        guard
-            let outputImage = filter.outputImage,
-            let outImage = context.createCGImage(outputImage, from: outputImage.extent)
-            else {
-                return nil
-        }
-
-        return UIImage(cgImage: outImage)
+        
     }
 }

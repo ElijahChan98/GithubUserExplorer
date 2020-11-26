@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Network
 
 class UsersListViewController: UIViewController, Storyboarded, UsersListViewModelDelegate {
     
@@ -14,6 +15,8 @@ class UsersListViewController: UIViewController, Storyboarded, UsersListViewMode
     weak var coordinator: MainCoordinator?
     var viewModel: UsersListViewModel!
     @IBOutlet weak var noInternetBanner: UILabel!
+    
+    private var firstLoad = true
     
     var searchController = UISearchController(searchResultsController: nil)
     var isSearchBarEmpty: Bool {
@@ -26,7 +29,7 @@ class UsersListViewController: UIViewController, Storyboarded, UsersListViewMode
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(showNoInternetBanner), name: .NetworkConnectivityDidChange, object: nil)
-        hideNoInternetBanner()
+        ConnectionMonitor.shared.monitorNetworkChanges()
         setupSearchController()
         
         viewModel = UsersListViewModel()
@@ -36,9 +39,18 @@ class UsersListViewController: UIViewController, Storyboarded, UsersListViewMode
         self.tableview.dataSource = self
         self.tableview.register(UINib.init(nibName: "NormalUserCell", bundle: nil), forCellReuseIdentifier: "NormalUserCell")
         self.tableview.register(UINib.init(nibName: "NotedUserCell", bundle: nil), forCellReuseIdentifier: "NotedUserCell")
-        
-        viewModel.fetchUsersFromCache()
-        viewModel.fetchGithubUsers()
+        self.tableview.register(UINib.init(nibName: "InvertedUserCell", bundle: nil), forCellReuseIdentifier: "InvertedUserCell")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if firstLoad {
+            viewModel.fetchUsersFromCache()
+            viewModel.fetchGithubUsers()
+            firstLoad = false
+        }
+        else {
+            viewModel.fetchUsersFromCache()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -54,9 +66,11 @@ class UsersListViewController: UIViewController, Storyboarded, UsersListViewMode
     }
     
     func hideNoInternetBanner() {
-        let transform = CGAffineTransform(translationX: 0, y: -noInternetBanner.frame.height)
-        noInternetBanner.alpha = 0
-        noInternetBanner.transform = transform
+        DispatchQueue.main.async {
+            let transform = CGAffineTransform(translationX: 0, y: -self.noInternetBanner.frame.height)
+            self.noInternetBanner.alpha = 0
+            self.noInternetBanner.transform = transform
+        }
     }
     
     @objc func showNoInternetBanner(_ notification: NSNotification) {
@@ -64,10 +78,12 @@ class UsersListViewController: UIViewController, Storyboarded, UsersListViewMode
             hideNoInternetBanner()
             return
         }
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0, options: .curveLinear, animations: {
-            self.noInternetBanner.alpha = 0.5
-            self.noInternetBanner.transform = .identity
-        }, completion: nil)
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0, options: .curveLinear, animations: {
+                self.noInternetBanner.alpha = 0.5
+                self.noInternetBanner.transform = .identity
+            }, completion: nil)
+        }
     }
     
     func onFetchUsersSuccess(with newIndexPathsToReload: [IndexPath]?) {
@@ -101,78 +117,57 @@ extension UsersListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isFiltering {
-            return viewModel.filteredUsers.count
+            return viewModel.filteredUserItems.count
         }
         return viewModel.totalCount
     }
     
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let user: GithubUser
-        if isFiltering {
-            user = viewModel.filteredUsers[indexPath.row]
+        var item: UserViewModelItem
+        if !isFiltering {
+            item = viewModel.userItems[indexPath.row]
         }
         else {
-            user = viewModel.users[indexPath.row]
+            item = viewModel.filteredUserItems[indexPath.row]
         }
-        
-        if let _ = user.note {
-            let cell = self.tableview.dequeueReusableCell(withIdentifier: "NotedUserCell") as! NotedUserCell
-            cell.backgroundColor = nil
-            
-            cell.userLabel?.text = user.username
-            cell.detailLabel?.text = user.details
-            cell.avatarImage?.image = user.image
-            
-            if user.seen == true {
-                cell.backgroundColor = .lightGray
-            }
-            
-            switch (user.state) {
-            case .filtered:
+        switch item.type {
+        case .Normal:
+            let cell = self.tableview.dequeueReusableCell(withIdentifier: "NormalUserCell") as! NormalUserCell
+            cell.item = item
+            switch (item.user.state) {
+            case .failed, .downloaded:
                 cell.activityIndicator.stopAnimating()
-            case .failed:
-                cell.activityIndicator.stopAnimating()
-                cell.textLabel?.text = "Failed to load"
             case .new:
                 cell.activityIndicator.startAnimating()
                 if !tableView.isDragging && !tableView.isDecelerating {
-                    viewModel.startOperations(for: user, at: indexPath)
-                }
-            case .downloaded:
-                cell.activityIndicator.stopAnimating()
-                if !tableView.isDragging && !tableView.isDecelerating {
-                    viewModel.startOperations(for: user, at: indexPath)
+                    viewModel.startOperations(for: item.user, at: indexPath)
                 }
             }
             return cell
-        }
-        else {
-            let cell = self.tableview.dequeueReusableCell(withIdentifier: "NormalUserCell") as! NormalUserCell
-            cell.backgroundColor = nil
-            
-            cell.userLabel?.text = user.username
-            cell.detailLabel?.text = user.details
-            cell.avatarImage?.image = user.image
-            
-            if user.seen == true {
-                cell.backgroundColor = .lightGray
-            }
-            
-            switch (user.state) {
-            case .filtered:
+        case .Noted:
+            let cell = self.tableview.dequeueReusableCell(withIdentifier: "NotedUserCell") as! NotedUserCell
+            cell.item = item
+            switch (item.user.state) {
+            case .failed, .downloaded:
                 cell.activityIndicator.stopAnimating()
-            case .failed:
-                cell.activityIndicator.stopAnimating()
-                cell.textLabel?.text = "Failed to load"
             case .new:
                 cell.activityIndicator.startAnimating()
                 if !tableView.isDragging && !tableView.isDecelerating {
-                    viewModel.startOperations(for: user, at: indexPath)
+                    viewModel.startOperations(for: item.user, at: indexPath)
                 }
-            case .downloaded:
+            }
+            return cell
+        case .Inverted:
+            let cell = self.tableview.dequeueReusableCell(withIdentifier: "InvertedUserCell") as! InvertedUserCell
+            cell.item = item
+            switch (item.user.state) {
+            case .failed, .downloaded:
                 cell.activityIndicator.stopAnimating()
+            case .new:
+                cell.activityIndicator.startAnimating()
                 if !tableView.isDragging && !tableView.isDecelerating {
-                    viewModel.startOperations(for: user, at: indexPath)
+                    viewModel.startOperations(for: item.user, at: indexPath)
                 }
             }
             return cell
@@ -182,10 +177,10 @@ extension UsersListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let user: GithubUser
         if isFiltering {
-            user = viewModel.filteredUsers[indexPath.row]
+            user = viewModel.filteredUserItems[indexPath.row].user
         }
         else {
-            user = viewModel.users[indexPath.row]
+            user = viewModel.userItems[indexPath.row].user
         }
         self.coordinator?.viewProfile(from: user)
     }
@@ -241,6 +236,7 @@ private extension UsersListViewController {
 extension UsersListViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
+        viewModel.suspendAllOperations()
         viewModel.filterContentForSearchText(searchBar.text!)
         viewModel.loadImagesForOnscreenCells()
     }

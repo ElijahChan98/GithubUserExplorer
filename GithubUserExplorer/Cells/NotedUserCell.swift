@@ -15,6 +15,24 @@ class NotedUserCell: UITableViewCell {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var noteImageView: UIImageView!
     
+    var item: UserViewModelItem? {
+        didSet {
+            guard let item = item as? NotedUserViewModelItem else {
+                return
+            }
+            
+            userLabel.text = item.user.username
+            detailLabel.text = item.user.details
+            avatarImage.image = item.user.image
+            if item.user.seen == true {
+                self.backgroundColor = .lightGray
+            }
+            else {
+                self.backgroundColor = nil
+            }
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

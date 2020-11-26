@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="106" id="jZr-SP-0Wr" userLabel="Inverted User Cell" customClass="InvertedUserCell" customModule="GithubUserExplorer" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="367" height="106"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jZr-SP-0Wr" id="mVg-Fb-UVP">
+                <rect key="frame" x="0.0" y="0.0" width="367" height="106"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AZP-Vo-1OU">
+                        <rect key="frame" x="10" y="33" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="12S-bD-pDk"/>
+                            <constraint firstAttribute="width" constant="40" id="l5v-vP-FDB"/>
+                        </constraints>
+                    </imageView>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="gFd-Y5-6M8">
+                        <rect key="frame" x="70" y="10" width="287" height="86"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sAt-0f-Oee">
+                                <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L3N-Mz-0ZK">
+                                <rect key="frame" x="0.0" y="43" width="287" height="43"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="jVB-Sa-4AI">
+                        <rect key="frame" x="11.5" y="34.5" width="37" height="37"/>
+                    </activityIndicatorView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="gFd-Y5-6M8" secondAttribute="bottom" constant="10" id="Gvz-ru-igu"/>
+                    <constraint firstItem="gFd-Y5-6M8" firstAttribute="leading" secondItem="AZP-Vo-1OU" secondAttribute="trailing" constant="20" id="MGq-Sb-FZH"/>
+                    <constraint firstItem="AZP-Vo-1OU" firstAttribute="leading" secondItem="mVg-Fb-UVP" secondAttribute="leading" constant="10" id="VQc-gR-Di6"/>
+                    <constraint firstItem="gFd-Y5-6M8" firstAttribute="top" secondItem="mVg-Fb-UVP" secondAttribute="top" constant="10" id="Zd1-d2-FOD"/>
+                    <constraint firstItem="jVB-Sa-4AI" firstAttribute="centerX" secondItem="AZP-Vo-1OU" secondAttribute="centerX" id="daN-IW-Drm"/>
+                    <constraint firstItem="jVB-Sa-4AI" firstAttribute="centerY" secondItem="AZP-Vo-1OU" secondAttribute="centerY" id="kyy-Nd-fmg"/>
+                    <constraint firstItem="AZP-Vo-1OU" firstAttribute="centerY" secondItem="mVg-Fb-UVP" secondAttribute="centerY" id="qB9-k6-hRt"/>
+                    <constraint firstAttribute="trailing" secondItem="gFd-Y5-6M8" secondAttribute="trailing" constant="10" id="qDx-qd-ux3"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="htr-YO-Ude"/>
+            <connections>
+                <outlet property="activityIndicator" destination="jVB-Sa-4AI" id="830-sN-FUp"/>
+                <outlet property="avatarImage" destination="AZP-Vo-1OU" id="fFc-EE-gXs"/>
+                <outlet property="detailLabel" destination="L3N-Mz-0ZK" id="BwJ-k6-mac"/>
+                <outlet property="userLabel" destination="sAt-0f-Oee" id="UNf-LW-1vE"/>
+            </connections>
+            <point key="canvasLocation" x="-166" y="190"/>
+        </tableViewCell>
+    </objects>
+</document>
