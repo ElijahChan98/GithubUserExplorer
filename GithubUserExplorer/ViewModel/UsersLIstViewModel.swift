@@ -40,7 +40,13 @@ class UsersListViewModel {
         self.userItems.append(item)
     }
     
-    func fetchUsersFromCache() {
+    func fetchUsersFromCacheThenWeb() {
+        fetchUsersFromCache {
+            self.fetchGithubUsers()
+        }
+    }
+    
+    private func fetchUsersFromCache(completion: (()->())?) {
         self.users = []
         self.userItems = []
         GithubUserPersistence.shared.retrieveUsersFromCache { (success, users) in
@@ -53,11 +59,13 @@ class UsersListViewModel {
                     }
                     self.total = self.userItems.count
                     self.delegate?.onFetchUsersSuccess(with: .none)
+                    completion?()
                 }
             }
             else {
                 DispatchQueue.main.async {
                     self.delegate?.onFetchUsersFail(with: "failed")
+                    completion?()
                 }
             }
         }

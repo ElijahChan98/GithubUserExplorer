@@ -37,16 +37,13 @@ class UsersListViewController: UIViewController, Storyboarded, UsersListViewMode
         self.tableview.dataSource = self
         self.tableview.register(UINib.init(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCell")
         
+        viewModel.fetchUsersFromCacheThenWeb()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(showNoInternetBanner), name: .NetworkConnectivityDidChange, object: nil)
         ConnectionMonitor.shared.monitorNetworkChanges()
         
-        reloadViewModel()
     }
     
-    func reloadViewModel() {
-        viewModel.fetchUsersFromCache()
-        viewModel.fetchGithubUsers()
-    }
     
     override func viewDidAppear(_ animated: Bool) {
         self.tableview.reloadData()

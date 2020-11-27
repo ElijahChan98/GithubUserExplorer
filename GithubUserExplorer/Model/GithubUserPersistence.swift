@@ -42,6 +42,18 @@ class GithubUserPersistence {
         return documentURL.appendingPathComponent(key + ".png")
     }
     
+    func saveContext(forContext context: NSManagedObjectContext) {
+        if context.hasChanges {
+            context.performAndWait {
+                do {
+                    try context.save()
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
     func save(user: GithubUser) {
         let managedContext = CoreDataContainer.shared.persistentContainer.viewContext
         let entity = NSEntityDescription.entity(forEntityName: "GithubUserAvatar", in: managedContext)!
@@ -50,29 +62,31 @@ class GithubUserPersistence {
         let predicate = NSPredicate(format: "id = %ld", user.id!)
         fetchRequest.predicate = predicate
         
-        do {
-            let object = try managedContext.fetch(fetchRequest)
-            if object.count == 0 {
-                avatar.setValue(user.userUrl, forKey: "userUrl")
-                avatar.setValue(user.avatarStringUrl, forKey: "avatarStringUrl")
-                avatar.setValue(user.details, forKey: "details")
-                avatar.setValue(user.id, forKey: "id")
-                avatar.setValue(user.state.rawValue, forKey: "photoRecordState")
-                avatar.setValue(user.username, forKey: "username")
-                avatar.setValue(user.seen, forKey: "seen")
+        let backgroundContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        backgroundContext.parent = managedContext
+        
+        backgroundContext.performAndWait {
+            do {
+                let object = try managedContext.fetch(fetchRequest)
+                if object.count == 0 {
+                    avatar.setValue(user.userUrl, forKey: "userUrl")
+                    avatar.setValue(user.avatarStringUrl, forKey: "avatarStringUrl")
+                    avatar.setValue(user.details, forKey: "details")
+                    avatar.setValue(user.id, forKey: "id")
+                    avatar.setValue(user.state.rawValue, forKey: "photoRecordState")
+                    avatar.setValue(user.username, forKey: "username")
+                    avatar.setValue(user.seen, forKey: "seen")
 
-                do {
-                    try managedContext.save()
-                } catch let error as NSError {
-                    print("Could not save. \(error), \(error.userInfo)")
+                    saveContext(forContext: backgroundContext)
+                }
+                else {
+                    return
                 }
             }
-            else {
-                return
+            catch {
+                print(error.localizedDescription)
             }
-        }
-        catch {
-            print(error.localizedDescription)
+            saveContext(forContext: managedContext)
         }
     }
     
@@ -82,45 +96,44 @@ class GithubUserPersistence {
         let predicate = NSPredicate(format: "id = %ld", user.id!)
         fetchRequest.predicate = predicate
         
-        do {
-            let object = try managedContext.fetch(fetchRequest)
-            if object.count == 1
-            {
-                let objectUpdate = object.first as! NSManagedObject
-                objectUpdate.setValue(user.id, forKey: "id")
-                objectUpdate.setValue(user.userUrl, forKey: "userUrl")
-                objectUpdate.setValue(user.avatarStringUrl, forKey: "avatarStringUrl")
-                objectUpdate.setValue(user.details, forKey: "details")
-                //objectUpdate.setValue(user.state.rawValue, forKey: "photoRecordState")
-                objectUpdate.setValue(user.username, forKey: "username")
-                objectUpdate.setValue(user.note, forKey: "note")
-                objectUpdate.setValue(user.seen, forKey: "seen")
-                
-                objectUpdate.setValue(user.name, forKey: "name")
-                objectUpdate.setValue(user.company, forKey: "company")
-                objectUpdate.setValue(user.blog, forKey: "blog")
-                objectUpdate.setValue(user.followers, forKey: "followers")
-                objectUpdate.setValue(user.following, forKey: "following")
-                
-                do{
-                    try managedContext.save()
-                }
-                catch
+        let backgroundContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        backgroundContext.parent = managedContext
+        
+        backgroundContext.performAndWait {
+            do {
+                let object = try managedContext.fetch(fetchRequest)
+                if object.count == 1
                 {
-                    print(error)
+                    let objectUpdate = object.first as! NSManagedObject
+                    objectUpdate.setValue(user.id, forKey: "id")
+                    objectUpdate.setValue(user.userUrl, forKey: "userUrl")
+                    objectUpdate.setValue(user.avatarStringUrl, forKey: "avatarStringUrl")
+                    objectUpdate.setValue(user.details, forKey: "details")
+                    //objectUpdate.setValue(user.state.rawValue, forKey: "photoRecordState")
+                    objectUpdate.setValue(user.username, forKey: "username")
+                    objectUpdate.setValue(user.note, forKey: "note")
+                    objectUpdate.setValue(user.seen, forKey: "seen")
+                    
+                    objectUpdate.setValue(user.name, forKey: "name")
+                    objectUpdate.setValue(user.company, forKey: "company")
+                    objectUpdate.setValue(user.blog, forKey: "blog")
+                    objectUpdate.setValue(user.followers, forKey: "followers")
+                    objectUpdate.setValue(user.following, forKey: "following")
+                    
+                    saveContext(forContext: backgroundContext)
                 }
             }
-        }
-        catch
-        {
-            print(error)
+            catch
+            {
+                print(error)
+            }
+            saveContext(forContext: managedContext)
         }
     }
     
     func deleteAllData() {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "GithubUserAvatar")
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-
         let persistentContainer = CoreDataContainer.shared.persistentContainer
 
         do {
@@ -128,6 +141,7 @@ class GithubUserPersistence {
         } catch let error as NSError {
             print(error)
         }
+
     }
     
     func retrieveUsersFromCache(completion: @escaping (_ success: Bool, _ users: [GithubUser]) -> ()) {
@@ -176,6 +190,7 @@ class CoreDataContainer {
     public static let shared = CoreDataContainer()
     
     // MARK: - Core Data stack
+    
 
     lazy var persistentContainer: NSPersistentContainer = {
         /*

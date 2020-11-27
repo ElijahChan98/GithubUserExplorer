@@ -23,19 +23,38 @@ class RequestManager {
     public static let shared = RequestManager()
     
     public func fetchGithubUsers(since: Int, completion: @escaping (_ success: Bool, _ response: [String:Any]?) -> ()) {
-        let sinceStringValue = "\(since)"
-        
-        let url = "\(Constants.GITHUB_BASE_URL)\(Constants.GITHUB_USERS)?since=\(sinceStringValue)"
-        self.createGenericRequest(url: url, requestMethod: .get) { (success, response) in
-            completion(success, response)
+        DispatchQueue.global().async {
+            let dispatchGroup = DispatchGroup()
+
+            dispatchGroup.enter()
+            let sinceStringValue = "\(since)"
+            
+            let url = "\(Constants.GITHUB_BASE_URL)\(Constants.GITHUB_USERS)?since=\(sinceStringValue)"
+            self.createGenericRequest(url: url, requestMethod: .get) { (success, response) in
+                DispatchQueue.main.async {
+                    completion(success, response)
+                }
+            }
+            
+            dispatchGroup.wait()
+            
         }
     }
     
     public func fetchGithubUserProfile(username: String, completion: @escaping (_ success: Bool, _ response: [String:Any]?) -> ()) {
-        let url = "\(Constants.GITHUB_BASE_URL)\(Constants.GITHUB_USERS)/\(username)"
-        self.createGenericRequest(url: url, requestMethod: .get) { (success, response) in
-            completion(success, response)
+        DispatchQueue.global().async {
+            let dispatchGroup = DispatchGroup()
+            dispatchGroup.enter()
+            
+            let url = "\(Constants.GITHUB_BASE_URL)\(Constants.GITHUB_USERS)/\(username)"
+            self.createGenericRequest(url: url, requestMethod: .get) { (success, response) in
+                DispatchQueue.main.async {
+                    completion(success, response)
+                }
+            }
+            dispatchGroup.leave()
         }
+        
     }
     
     private func createGenericRequest(url: String, requestMethod: RequestMethod, completion: @escaping (_ success: Bool, _ response: [String: Any]?) -> ()) {
